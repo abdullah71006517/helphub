@@ -51,6 +51,22 @@ raf.writeBytes(line);
 
     }
 
+    public boolean userExists(String name) {
+        try (BufferedReader br = new BufferedReader(new FileReader("userdata.text"))) {
+            String line;
 
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+
+                if (data[0].equals(name)) {
+                    return true;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }

@@ -24,15 +24,19 @@ return false;
 
    public void rigser (){
        String name,password;
+
+
+       DB_service service=new DB_service();
         System.out.println("Enter your name ");
         Scanner scanner =new Scanner(System.in);
        name= scanner.nextLine();
+       if(service.userExists(name)) throw new RuntimeException("Username already exists! ");
+
         System.out.println("Enter your Password");
         password=scanner.nextLine();
-
        user user=new user(name,password);
 
-        DB_service service=new DB_service();
+
         service.put(user);
 
 
