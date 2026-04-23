@@ -68,5 +68,72 @@ raf.writeBytes(line);
         }
         return false;
     }
+public void postrequest(helprequest helprequest) throws IOException {
+    String line=loadLastId()+","+helprequest.getTile()+","+helprequest.getCategory()+","+helprequest.getRequestname()+","+ helprequest.getStatus()+"\n";
+
+    try(FileWriter fileWriter=new FileWriter("service.text",true)) {
+        fileWriter.append(line);
+
+
+    }
+   catch (FileNotFoundException E){
+        throw new RuntimeException("file not file ");
+
+   }
+
+}
+public ArrayList<helprequest> getrequest(){
+        ArrayList<helprequest> helprequests=new ArrayList<>();
+
+
+        try(BufferedReader br=new BufferedReader(new FileReader("service.text"))){
+            String line;
+            while ( (line = br.readLine()) !=null){
+                String parts[]=line.split(",");
+                int id=Integer.parseInt(parts[0]);
+                String tile=parts[1];
+                String Category =parts[2];
+                String  requestname=parts[3];
+                String status=parts[4];
+
+                helprequest helprequest=new helprequest(tile,Category,requestname,status );
+                helprequests.add(helprequest);
+
+
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    return helprequests;
+
+}
+
+
+
+    public static int loadLastId() {
+
+        int lastId = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader("service.text"))) {
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                lastId = Integer.parseInt(parts[0]); // first column = id
+            }
+
+        } catch (Exception e) {
+            System.out.println("File not found or empty");
+        }
+
+        return lastId+1;
+    }
+
+
+
 
 }
